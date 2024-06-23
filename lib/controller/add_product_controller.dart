@@ -56,13 +56,13 @@ class AddProductController extends ChangeNotifier {
     for (int i = 0; i < priceList.length; i++) {
       TextEditingController price = priceList[i];
       TextEditingController size = sizeList[i];
-      var priceData = {"name": size.text, "price": price.text};
+      var priceData = {"name": size.text, "price": price.text, "isAdded":false};
       priceL.add(priceData);
     }
     for (int i = 0; i < extraNameList.length; i++) {
       TextEditingController price = extraPriceList[i];
       TextEditingController name = extraNameList[i];
-      var extraData = {"name": name.text, "price": price.text};
+      var extraData = {"name": name.text, "price": price.text, "isAdded":false};
       extraL.add(extraData);
     }
     var data = {
@@ -71,6 +71,9 @@ class AddProductController extends ChangeNotifier {
       "description": description,
       "price": priceL,
       "extras": extraL,
+      "tableNo":0,
+      "quantity":0, 
+      "status": 0, 
     };
     return data;
   }
@@ -84,7 +87,6 @@ class AddProductController extends ChangeNotifier {
       isLoading = true;
       notifyListeners();
       final storageRef = FirebaseStorage.instance.ref();
-
       for (var img in byteImageList) {
         final imagesRef = storageRef.child("products/${name} ${img.length}");
         var uploadTask = imagesRef.putData(img);

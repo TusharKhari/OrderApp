@@ -1,13 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:image_network/image_network.dart';
+import 'package:flutter/services.dart';
 import 'package:order_app/controller/add_product_controller.dart';
-import 'package:order_app/screens/image.dart';
 import 'package:provider/provider.dart';
+
+import '../widgets/app_text_field.dart';
 
 class AddProductScreen extends StatefulWidget {
   const AddProductScreen({super.key});
@@ -25,7 +23,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("add product"),
+        title: const Text("add product"), 
       ),
       floatingActionButton: IconButton(
           onPressed: () {
@@ -41,35 +39,19 @@ class _AddProductScreenState extends State<AddProductScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // CachedNetworkImage(
-            //   imageUrl:
-            //       "https://firebasestorage.googleapis.com/v0/b/order-app-45dab.appspot.com/o/products%2Ffarm%20house%20468944?alt=media&token=93d7adfa-7295-48e9-9a9d-3a4f25bfcc64",
-            // ),
-          ImageNetwork(
-            image: "https://firebasestorage.googleapis.com/v0/b/order-app-45dab.appspot.com/o/products%2Ffarm%20house%20468944?alt=media&token=93d7adfa-7295-48e9-9a9d-3a4f25bfcc64",
-          height: 190,
-          width: 200,
-          ), 
-            // SizedBox(
-            //   height: 190,
-            //   width: 200,
-            //   child: MyImage(
-            //     url:
-            //         "https://firebasestorage.googleapis.com/v0/b/order-app-45dab.appspot.com/o/products%2Ffarm%20house%20468944?alt=media&token=93d7adfa-7295-48e9-9a9d-3a4f25bfcc64",
-            //   ),
-            // ),
-            TextField(
-              decoration: InputDecoration(hintText: "Name"),
+            SizedBox(
+              height: 30,
+            ),
+            AppTextField(
+              hintText: "Name",
               controller: nameController,
             ),
-            TextField(
-              decoration: InputDecoration(hintText: "Category"),
+            AppTextField(
+              hintText: "Category",
               controller: categoryController,
             ),
-            TextField(
-              decoration: InputDecoration(hintText: "Description"),
-              controller: descriptionController,
-            ),
+            AppTextField(
+                controller: descriptionController, hintText: "Description"),
             Consumer<AddProductController>(
               builder: (context, value, child) {
                 return value.isLoading
@@ -83,17 +65,17 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                 return Row(
                                   children: [
                                     Flexible(
-                                      child: TextField(
-                                        decoration:
-                                            InputDecoration(hintText: "size"),
-                                        controller: value.sizeList[index],
-                                      ),
+                                      child: AppTextField(
+                                          controller: value.sizeList[index],
+                                          hintText: "size"),
                                     ),
                                     Flexible(
-                                      child: TextField(
-                                        decoration:
-                                            InputDecoration(hintText: "cost"),
+                                      child: AppTextField(
                                         controller: value.priceList[index],
+                                        hintText: "cost",
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.digitsOnly
+                                        ],
                                       ),
                                     ),
                                   ],
@@ -113,17 +95,18 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                 return Row(
                                   children: [
                                     Flexible(
-                                      child: TextField(
-                                        decoration:
-                                            InputDecoration(hintText: "name"),
-                                        controller: value.extraNameList[index],
-                                      ),
+                                      child: AppTextField(
+                                          controller:
+                                              value.extraNameList[index],
+                                          hintText: "name"),
                                     ),
                                     Flexible(
-                                      child: TextField(
-                                        decoration:
-                                            InputDecoration(hintText: "cost"),
+                                      child: AppTextField(
                                         controller: value.extraPriceList[index],
+                                        hintText: "cost",
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.digitsOnly
+                                        ],
                                       ),
                                     ),
                                   ],
