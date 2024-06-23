@@ -59,6 +59,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     : Column(
                         children: [
                           ListView.builder(
+                             physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemCount: value.priceList.length,
                               itemBuilder: (context, index) {
@@ -88,7 +89,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             child: Text("add Size and cost"),
                           ),
                           // extras
-                          ListView.builder(
+                          ListView.builder( physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemCount: value.extraNameList.length,
                               itemBuilder: (context, index) {
@@ -122,7 +123,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             visible: value.byteImageList.isNotEmpty,
                             child: SizedBox(
                               height: 120,
-                              child: ListView.builder(
+                              child: ListView.builder( physics: const NeverScrollableScrollPhysics(),
                                   scrollDirection: Axis.horizontal,
                                   shrinkWrap: true,
                                   itemCount: value.byteImageList.length,

@@ -42,7 +42,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
         children: [
           Consumer<OrdersController>(
             builder: (context, providerValue, child) {
-              return ListView.builder(
+              return ListView.builder( physics: const NeverScrollableScrollPhysics(),
                 itemCount: providerValue.ordersList.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
@@ -99,7 +99,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                             ],
                           ),
                           const Text("price"),
-                          ListView.builder(
+                          ListView.builder( physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemCount: item.price?.length ?? 0,
                             itemBuilder: (context, priceIdx) {
@@ -127,7 +127,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                             },
                           ),
                           const Text("extras"),
-                          ListView.builder(
+                          ListView.builder( physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemCount: item.extras?.length ?? 0,
                             itemBuilder: (context, extraIdx) {
