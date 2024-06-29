@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:order_app/screens/add_product_screen.dart';
+import 'package:order_app/utils/global_variables.dart';
 import 'package:provider/provider.dart';
 
 import '../controller/orders_controller.dart';
@@ -26,134 +27,178 @@ class _OrdersScreenState extends State<OrdersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backColor,
       appBar: AppBar(
-        title: const Text("All orders"),actions: [
-           IconButton(onPressed: () {
-             Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddProductScreen(),));
-           }, icon: const Icon(Icons.add_to_photos_sharp)), 
-          const SizedBox(
-            width: 70,
-          ), 
-        ],
-
+        backgroundColor: primaryColor,
+        title: Text(
+          "All orders",
+          style: heading3,
+        ),
       ),
       body: SingleChildScrollView(
           child: Column(
         children: [
           Consumer<OrdersController>(
             builder: (context, providerValue, child) {
-              return ListView.builder( physics: const NeverScrollableScrollPhysics(),
+              return ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: providerValue.ordersList.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   var item = providerValue.ordersList[index];
-                  return Card(
-                      color: item.status == 1
-                          ? Colors.orange
-                          : item.status == 2
-                              ? Colors.yellow
-                              : Colors.green,
-                      child: Column(
-                        children: [
-                          Row(
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card(
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            side: BorderSide(color: boxColor, width: 1)),
+                        color: item.status == 1
+                            ? Color.fromARGB(255, 162, 100, 6)
+                            : item.status == 2
+                                ? Color.fromARGB(255, 180, 163, 10)
+                                : const Color.fromARGB(255, 36, 136, 39),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // ImageNetwork(
-                              //   image: item.photos?.first ?? "",
-                              //   height: 99,
-                              //   width: 99,
-                              // ),
-                              Container(
-                                color: Colors.black,
-                                height: 90,
-                                width: 90,
-                                child: Center(
+                              Center(
+                                child: Container(
+                                  padding: EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                      color: borderColor.withOpacity(0.5),
+                                      border: Border.all(color: borderColor),
+                                      borderRadius: BorderRadius.circular(5)),
                                   child: Text(
-                                    "${item.tableNo}",
-                                    style: const TextStyle(
-                                        fontSize: 32, color: Colors.white),
+                                    "TABLE ${item.tableNo}",
+                                    style: heading2,
                                   ),
                                 ),
                               ),
-                              Column(
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(item.name ?? ""),
-                                  Text(item.description ?? ""),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        height: 25,
+                                        width: 25,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(3),
+                                            border:
+                                                Border.all(color: boxColor)),
+                                        child: Text(
+                                          "1",
+                                          style: des2,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        "${item.name} x${item.quantity}" ?? "",
+                                        style: heading2,
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    "Price",
+                                    style: heading2,
+                                  ),
                                 ],
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                "Size: ",
+                                style: des3,
+                              ),
+                              SizedBox(
+                                height: 4,
+                              ),
+                              ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: item.price?.length ?? 0,
+                                itemBuilder: (context, priceIdx) {
+                                  var price = item.price?[priceIdx];
+                                  return Visibility(
+                                    visible: price?.isAdded ?? false,
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "${price?.name} (${price?.price})",
+                                          style: des2,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Text(
+                                "Extras: ",
+                                style: des3,
+                              ),
+                              SizedBox(
+                                height: 4,
+                              ),
+                              ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: item.extras?.length ?? 0,
+                                itemBuilder: (context, extraIdx) {
+                                  var extra = item.extras?[extraIdx];
+                                  return Visibility(
+                                    visible: extra?.isAdded ?? false,
+                                    child: Text(
+                                      "${extra?.name} (${extra?.price})",
+                                      style: des2,
+                                    ),
+                                  );
+                                },
                               ),
                               Visibility(
                                 visible: item.status != 3,
-                                child: TextButton(
-                                  onPressed: () {
-                                    if (item.status != 3) {
-                                      providerValue.updateStatus(
-                                          index: index,
-                                          status: (item.status ?? 0) + 1);
-                                    }
-                                  },
-                                  child: Text(
-                                      "Change Status to ${item.status == 1 ? "Preparing" : item.status == 2 ? "prepared" : ""}"),
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            WidgetStateProperty.all(backColor),
+                                        shape: WidgetStateProperty.all(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5)))),
+                                    onPressed: () {
+                                      if (item.status != 3) {
+                                        providerValue.updateStatus(
+                                            index: index,
+                                            status: (item.status ?? 0) + 1);
+                                      }
+                                    },
+                                    child: Text(
+                                      "Change Status to ${item.status == 1 ? "Preparing" : item.status == 2 ? "prepared" : ""}",
+                                      style: des2,
+                                    ),
+                                  ),
                                 ),
                               ),
-                              Text(
-                                  "Status :  ${item.status == 1 ? "ready To prepare" : item.status == 2 ? "preparing" : "Served"}"),
                             ],
                           ),
-                          const Text("price"),
-                          ListView.builder( physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: item.price?.length ?? 0,
-                            itemBuilder: (context, priceIdx) {
-                              var price = item.price?[priceIdx];
-                              return Visibility(
-                                visible: price?.isAdded ?? false,
-                                child: Row(
-                                  children: [
-                                    Checkbox(
-                                      value: price?.isAdded ?? false,
-                                      onChanged: (value) {
-                                        // providerValue.selectPrice(
-                                        //     index: index, priceIdex: priceIdx);
-                                      },
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text("${price?.name}"),
-                                        Text("${price?.price}"),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                          const Text("extras"),
-                          ListView.builder( physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: item.extras?.length ?? 0,
-                            itemBuilder: (context, extraIdx) {
-                              var extra = item.extras?[extraIdx];
-                              return Visibility(
-                                visible: extra?.isAdded ?? false,
-                                child: Row(
-                                  children: [
-                                    Checkbox(
-                                      value: extra?.isAdded ?? false,
-                                      onChanged: (value) {},
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text("${extra?.name}"),
-                                        Text("${extra?.price}"),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                          Text("QTY : ${item.quantity}"),
-                        ],
-                      ));
+                        )),
+                  );
                 },
               );
             },
