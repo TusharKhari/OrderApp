@@ -24,7 +24,7 @@ class AppTextField extends StatelessWidget {
           focusColor: primaryColor,
           hintText: hintText,
           hintStyle: des,
-          hoverColor: primaryColor,
+          // hoverColor: primaryColor,
           border: OutlineInputBorder(
             borderSide: BorderSide(
               color: Colors.blue,

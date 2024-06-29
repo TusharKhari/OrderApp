@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
@@ -72,7 +71,7 @@ class AddProductController extends ChangeNotifier {
       "price": priceL,
       "extras": extraL,
       "tableNo":0,
-      "quantity":0, 
+      "quantity":1, 
       "status": 0, 
     };
     return data;
