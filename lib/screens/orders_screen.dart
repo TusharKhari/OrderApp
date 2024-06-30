@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:order_app/screens/add_product_screen.dart';
 import 'package:order_app/utils/global_variables.dart';
 import 'package:provider/provider.dart';
 
@@ -38,6 +37,23 @@ class _OrdersScreenState extends State<OrdersScreen> {
       body: SingleChildScrollView(
           child: Column(
         children: [
+          Align(
+            alignment: Alignment.centerRight,
+            child: InkWell(
+              onTap: () {
+                 context.read<OrdersController>().moveToHistory();
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                margin: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: Colors.deepPurple, 
+                  border: Border.all(color: Colors.white),
+                  borderRadius: BorderRadius.circular(10)
+                ),
+                child: const Text("Move to History", style: TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.w500),),),
+            ),
+          ),
           Consumer<OrdersController>(
             builder: (context, providerValue, child) {
               return ListView.builder(
@@ -54,9 +70,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
                             borderRadius: BorderRadius.circular(5),
                             side: BorderSide(color: boxColor, width: 1)),
                         color: item.status == 1
-                            ? Color.fromARGB(255, 162, 100, 6)
+                            ? const Color.fromARGB(255, 162, 100, 6)
                             : item.status == 2
-                                ? Color.fromARGB(255, 180, 163, 10)
+                                ? const Color.fromARGB(255, 180, 163, 10)
                                 : const Color.fromARGB(255, 36, 136, 39),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
@@ -66,7 +82,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                             children: [
                               Center(
                                 child: Container(
-                                  padding: EdgeInsets.all(8),
+                                  padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
                                       color: borderColor.withOpacity(0.5),
                                       border: Border.all(color: borderColor),
@@ -77,7 +93,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 8,
                               ),
                               Row(
@@ -100,7 +116,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                           textAlign: TextAlign.center,
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 10,
                                       ),
                                       Text(
@@ -115,14 +131,14 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                   ),
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 8,
                               ),
                               Text(
                                 "Size: ",
                                 style: des3,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 4,
                               ),
                               ListView.builder(
@@ -144,14 +160,14 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                   );
                                 },
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 8,
                               ),
                               Text(
                                 "Extras: ",
                                 style: des3,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 4,
                               ),
                               ListView.builder(
