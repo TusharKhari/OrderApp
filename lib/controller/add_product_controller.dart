@@ -55,13 +55,21 @@ class AddProductController extends ChangeNotifier {
     for (int i = 0; i < priceList.length; i++) {
       TextEditingController price = priceList[i];
       TextEditingController size = sizeList[i];
-      var priceData = {"name": size.text, "price": price.text, "isAdded":false};
+      var priceData = {
+        "name": size.text,
+        "price": price.text,
+        "isAdded": false
+      };
       priceL.add(priceData);
     }
     for (int i = 0; i < extraNameList.length; i++) {
       TextEditingController price = extraPriceList[i];
       TextEditingController name = extraNameList[i];
-      var extraData = {"name": name.text, "price": price.text, "isAdded":false};
+      var extraData = {
+        "name": name.text,
+        "price": price.text,
+        "isAdded": false
+      };
       extraL.add(extraData);
     }
     var data = {
@@ -70,9 +78,10 @@ class AddProductController extends ChangeNotifier {
       "description": description,
       "price": priceL,
       "extras": extraL,
-      "tableNo":0,
-      "quantity":1, 
-      "status": 0, 
+      "tableNo": 0,
+      "quantity": 1,
+      "totalPrice": 0,
+      "status": 0,
     };
     return data;
   }
@@ -98,15 +107,22 @@ class AddProductController extends ChangeNotifier {
                   name: name, category: category, description: description);
               var pho = {"photos": imagesL};
               data.addEntries(pho.entries);
-              addProductToFireDb(data: data);
+            await  addProductToFireDb(data: data);
+            extraPriceList.clear();
+            extraNameList.clear();
+            sizeList.clear();
+            priceList.clear();
+            notifyListeners();
             }
           }
         });
       }
     } catch (e) {
-       isLoading = false;
+      isLoading = false;
       notifyListeners();
+
       log("message $e");
+      throw e;
     }
   }
 
@@ -114,19 +130,18 @@ class AddProductController extends ChangeNotifier {
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
       CollectionReference products = firestore.collection('products');
-      log("messageeee");
-      await products
-          .add(data)
-          .then((value) => print("User Added"))
-          .catchError((error) => print("Failed to add user: $error"));
-      log("message");
+      await products.add(data).then((value) {}).catchError((error) {
+        print("Failed to add user: $error");
+        throw error;
+      });
       print("final data $data");
-       isLoading = false;
+      isLoading = false;
       notifyListeners();
     } catch (e) {
-       isLoading = false;
+      isLoading = false;
       notifyListeners();
-      print("_addProductToFireDbb $e");
+            print("_addProductToFireDbb $e");
+      throw e;
     }
   }
 }

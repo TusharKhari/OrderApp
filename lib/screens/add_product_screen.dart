@@ -221,11 +221,21 @@ class _AddProductScreenState extends State<AddProductScreen> {
               ),
               padding: EdgeInsets.all(10),
               child: TextButton(
-                  onPressed: () {
-                    context.read<AddProductController>().addProduct(
-                        name: nameController.text,
-                        category: categoryController.text,
-                        description: descriptionController.text);
+                  onPressed: () async {
+                    try {
+                      await context.read<AddProductController>().addProduct(
+                          name: nameController.text,
+                          category: categoryController.text,
+                          description: descriptionController.text);
+                          nameController.clear();
+                          categoryController.clear();
+                          descriptionController.clear();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Item added !")));
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Item add failed $e !")));
+                    }
                   },
                   style: ButtonStyle(
                       backgroundColor: WidgetStateProperty.all(primaryColor),

@@ -3,6 +3,7 @@ class ProductModel {
   List<String>? photos;
   int? status;
   int? quantity;
+  double? totalPrice;
   String? category;
   String? description;
   List<NamePriceIsAdded>? extras;
@@ -18,6 +19,7 @@ class ProductModel {
     this.description,
     this.extras,
     this.name,
+    this.totalPrice,
     this.price,
   });
 
@@ -59,6 +61,7 @@ class ProductModel {
       extras: extras,
       name: json['name'],
       price: price,
+      totalPrice: json.containsKey("totalPrice") ? json["totalPrice"] : null,
     );
   }
 
@@ -68,6 +71,7 @@ class ProductModel {
     data['photos'] = photos;
     data['status'] = status;
     data['quantity'] = quantity;
+    data['totalPrice'] = totalPrice;
     data['category'] = category;
     data['description'] = description;
     if (extras != null) {
@@ -85,6 +89,7 @@ class ProductModel {
     List<String>? photos,
     int? status,
     int? quantity,
+    double? totalPrice,
     String? category,
     String? description,
     List<NamePriceIsAdded>? extras,
@@ -101,6 +106,7 @@ class ProductModel {
       extras: extras ?? this.extras,
       name: name ?? this.name,
       price: price ?? this.price,
+      totalPrice: totalPrice ?? this.totalPrice,
     );
   }
 }
@@ -132,7 +138,7 @@ class NamePriceIsAdded {
     );
   }
 
-   Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = name;
     data['price'] = price;

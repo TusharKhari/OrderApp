@@ -104,13 +104,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                         width: 10,
                                       ),
                                       Text(
-                                        "${item.name} x ${item.quantity}" ?? "",
+                                        "${item.name} x ${item.quantity}",
                                         style: heading2,
                                       ),
                                     ],
                                   ),
                                   Text(
-                                    "Price",
+                                    "Price: ${item.totalPrice}",
                                     style: heading2,
                                   ),
                                 ],
